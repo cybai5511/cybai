@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberAI (CYBAI) - Litepaper | AI Agent Economy on Aptos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-cyan: #00ffff;
+            --primary-purple: #8a2be2;
+            --dark-bg: #0a0e27;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border-color: rgba(0, 255, 255, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #b8c5d6;
+            --accent-glow: rgba(0, 255, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1419 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header/Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 20px 60px;
+            position: relative;
+        }
+
+        .logo-section {
+            margin-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .logo-container {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            animation: floatLogo 4s ease-in-out infinite;
+        }
+
+        .hexagon-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 140px;
+            height: 140px;
+            transform: translate(-50%, -50%) rotate(0deg);
+            animation: rotateHex 20s linear infinite;
+        }
+
+        .hexagon-shape {
+            width: 100%;
+            height: 100%;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            position: relative;
+            box-shadow: 0 0 40px var(--accent-glow);
+        }
+
+        .hexagon-shape::before {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            background: var(--dark-bg);
+        }
+
+        .hexagon-shape::after {
+            content: 'AI';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .circuit-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .circuit-line {
+            position: absolute;
+            background: var(--primary-cyan);
+            box-shadow: 0 0 10px var(--primary-cyan);
+        }
+
+        .circuit-line:nth-child(1) { width: 50px; height: 2px; top: 50%; left: -30px; }
+        .circuit-line:nth-child(2) { width: 50px; height: 2px; top: 50%; right: -30px; }
+        .circuit-line:nth-child(3) { width: 2px; height: 50px; left: 50%; top: -30px; }
+        .circuit-line:nth-child(4) { width: 2px; height: 50px; left: 50%; bottom: -30px; }
+
+        .brand-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+
+        .brand-title .cyber {
+            color: var(--primary-cyan);
+            text-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .brand-title .ai {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .token-symbol {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--primary-cyan);
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .stat-item {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 20px 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 10px 30px var(--accent-glow);
+            transform: translateY(-5px);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-cyan);
+            margin-top: 5px;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 35px;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-cyan), var(--primary-purple));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 15px 40px var(--accent-glow);
+            transform: translateY(-10px);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--primary-cyan);
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Tokenomics */
+        .tokenomics-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .token-allocation {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .token-allocation:hover {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+
+        .allocation-percentage {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .allocation-label {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .allocation-amount {
+            font-family: 'Space Mono', monospace;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Roadmap */
+        .roadmap-timeline {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .roadmap-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--primary-cyan), var(--primary-purple));
+            transform: translateX(-50%);
+        }
+
+        .roadmap-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .roadmap-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .roadmap-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .roadmap-content {
+            width: 45%;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .roadmap-content:hover {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 15px 40px var(--accent-glow);
+        }
+
+        .roadmap-phase {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: var(--primary-cyan);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .roadmap-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .roadmap-description {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .roadmap-features {
+            list-style: none;
+            padding: 0;
+        }
+
+        .roadmap-features li {
+            color: var(--text-secondary);
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .roadmap-features li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--primary-cyan);
+            font-weight: bold;
+        }
+
+        .roadmap-marker {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--primary-cyan);
+            border: 4px solid var(--dark-bg);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--accent-glow);
+            z-index: 2;
+        }
+
+        /* Use Cases */
+        .use-case-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .use-case-card:hover {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 15px 40px var(--accent-glow);
+            transform: translateX(10px);
+        }
+
+        .use-case-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .use-case-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .use-case-description {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Footer CTA */
+        .cta-section {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(138, 43, 226, 0.1));
+            border: 2px solid var(--border-color);
+            border-radius: 30px;
+            padding: 60px 40px;
+            text-align: center;
+            margin: 80px 0;
+        }
+
+        .cta-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            font-family: 'Orbitron', sans-serif;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            color: var(--text-primary);
+            box-shadow: 0 5px 25px var(--accent-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--primary-cyan);
+            color: var(--primary-cyan);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-cyan);
+            color: var(--dark-bg);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 80px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-cyan);
+        }
+
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes floatLogo {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes rotateHex {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .roadmap-timeline::before { left: 30px; }
+            .roadmap-item { flex-direction: column !important; align-items: flex-start; padding-left: 60px; }
+            .roadmap-content { width: 100%; }
+            .roadmap-marker { left: 30px; }
+        }
+
+        @media (max-width: 768px) {
+            .brand-title { font-size: 3rem; }
+            .hero-stats { flex-direction: column; }
+            .section-header h2 { font-size: 2rem; }
+            .cards-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="container">
+            <div class="logo-section">
+                <div class="logo-container">
+                    <div class="hexagon-wrapper">
+                        <div class="hexagon-shape"></div>
+                    </div>
+                    <div class="circuit-elements">
+                        <div class="circuit-line"></div>
+                        <div class="circuit-line"></div>
+                        <div class="circuit-line"></div>
+                        <div class="circuit-line"></div>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="brand-title">
+                        <span class="cyber">CYBER</span><span class="ai">AI</span>
+                    </h1>
+                    <div class="token-symbol">$CYBAI</div>
+                </div>
+            </div>
+            
+            <p class="tagline">Powering the AI Agent Economy on Aptos Blockchain</p>
+            
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-label">Total Supply</div>
+                    <div class="stat-value">765M</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Network</div>
+                    <div class="stat-value">Aptos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Decimals</div>
+                    <div class="stat-value">8</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vision Section -->
+    <section id="vision">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Vision</h2>
+                <p>Building the future of autonomous AI agents on the fastest blockchain</p>
+            </div>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">🤖</div>
+                    <h3>Autonomous AI Agents</h3>
+                    <p>Deploy self-operating AI agents that execute complex tasks, trade autonomously, and provide intelligent automation across the Aptos ecosystem.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">⚡</div>
+                    <h3>Powered by Aptos</h3>
+                    <p>Leveraging Aptos's 160,000+ TPS and sub-second finality for lightning-fast AI agent transactions with minimal latency.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🔗</div>
+                    <h3>Decentralized Intelligence</h3>
+                    <p>Create a network of interconnected AI agents that collaborate, share insights, and evolve through collective learning.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tokenomics Section -->
+    <section id="tokenomics">
+        <div class="container">
+            <div class="section-header">
+                <h2>Tokenomics</h2>
+                <p>Fair distribution designed for sustainable growth and community empowerment</p>
+            </div>
+            
+            <div class="tokenomics-breakdown">
+                <div class="token-allocation">
+                    <div class="allocation-percentage">40%</div>
+                    <div class="allocation-label">Public Sale & Liquidity</div>
+                    <div class="allocation-amount">306,000,000 CYBAI</div>
+                </div>
+                
+                <div class="token-allocation">
+                    <div class="allocation-percentage">25%</div>
+                    <div class="allocation-label">AI Development Fund</div>
+                    <div class="allocation-amount">191,250,000 CYBAI</div>
+                </div>
+                
+                <div class="token-allocation">
+                    <div class="allocation-percentage">15%</div>
+                    <div class="allocation-label">Team & Advisors</div>
+                    <div class="allocation-amount">114,750,000 CYBAI</div>
+                </div>
+                
+                <div class="token-allocation">
+                    <div class="allocation-percentage">10%</div>
+                    <div class="allocation-label">Community Rewards</div>
+                    <div class="allocation-amount">76,500,000 CYBAI</div>
+                </div>
+                
+                <div class="token-allocation">
+                    <div class="allocation-percentage">10%</div>
+                    <div class="allocation-label">Ecosystem Growth</div>
+                    <div class="allocation-amount">76,500,000 CYBAI</div>
+                </div>
+            </div>
+            
+            <div class="cards-grid" style="margin-top: 60px;">
+                <div class="card">
+                    <div class="card-icon">🔥</div>
+                    <h3>Burn Mechanism</h3>
+                    <p>5% of all AI agent service fees are burned, creating deflationary pressure and increasing scarcity over time.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">💎</div>
+                    <h3>Staking Rewards</h3>
+                    <p>Stake CYBAI tokens to run your own AI agent nodes and earn rewards from network operations and service fees.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🏛️</div>
+                    <h3>Governance</h3>
+                    <p>Token holders vote on AI model updates, feature implementations, and fund allocation through decentralized governance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section id="use-cases">
+        <div class="container">
+            <div class="section-header">
+                <h2>Real-World Use Cases</h2>
+                <p>Practical applications powering the AI Agent Economy</p>
+            </div>
+            
+            <div class="use-case-card">
+                <div class="use-case-number">01</div>
+                <h3 class="use-case-title">AI Trading Agents</h3>
+                <p class="use-case-description">Deploy autonomous trading bots that analyze market data, execute trades, and manage portfolios 24/7. Powered by machine learning algorithms that adapt to market conditions in real-time.</p>
+            </div>
+            
+            <div class="use-case-card">
+                <div class="use-case-number">02</div>
+                <h3 class="use-case-title">Smart Contract Auditing</h3>
+                <p class="use-case-description">AI agents automatically scan, analyze, and audit smart contracts on Aptos for vulnerabilities, providing instant security reports and recommendations.</p>
+            </div>
+            
+            <div class="use-case-card">
+                <div class="use-case-number">03</div>
+                <h3 class="use-case-title">Yield Optimization</h3>
+                <p class="use-case-description">Intelligent agents continuously monitor DeFi protocols across Aptos, automatically moving funds to maximize yield while minimizing risk.</p>
+            </div>
+            
+            <div class="use-case-card">
+                <div class="use-case-number">04</div>
+                <h3 class="use-case-title">Predictive Analytics</h3>
+                <p class="use-case-description">Advanced AI models provide market predictions, risk assessments, and actionable insights for traders and investors in the Aptos ecosystem.</p>
+            </div>
+            
+            <div class="use-case-card">
+                <div class="use-case-number">05</div>
+                <h3 class="use-case-title">Automated Market Making</h3>
+                <p class="use-case-description">AI-powered AMMs that dynamically adjust liquidity provision strategies based on market conditions, volatility, and trading volume patterns.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section id="roadmap">
+        <div class="container">
+            <div class="section-header">
+                <h2>Development Roadmap</h2>
+                <p>Our journey to revolutionize AI on blockchain</p>
+            </div>
+            
+            <div class="roadmap-timeline">
+                <div class="roadmap-item">
+                    <div class="roadmap-content">
+                        <div class="roadmap-phase">Q1 2025 - Launch Phase</div>
+                        <h3 class="roadmap-title">Foundation</h3>
+                        <p class="roadmap-description">Establishing the core infrastructure and initial token distribution</p>
+                        <ul class="roadmap-features">
+                            <li>Token Generation Event (TGE) on Aptos</li>
+                            <li>DEX Listings & Liquidity Pools</li>
+                            <li>Community Building & Marketing Campaign</li>
+                            <li>Smart Contract Audits</li>
+                            <li>Website & Documentation Launch</li>
+                        </ul>
+                    </div>
+                    <div class="roadmap-marker"></div>
+                </div>
+                
+                <div class="roadmap-item">
+                    <div class="roadmap-content">
+                        <div class="roadmap-phase">Q2 2025 - Agent MVP</div>
+                        <h3 class="roadmap-title">First AI Agents</h3>
+                        <p class="roadmap-description">Launch of initial AI agent suite for the community</p>
+                        <ul class="roadmap-features">
+                            <li>AI Trading Bot Beta Release</li>
+                            <li>Price Prediction Model v1.0</li>
+                            <li>Staking Platform Launch</li>
+                            <li>Developer SDK Release</li>
+                            <li>CEX Listings (Tier 2)</li>
+                        </ul>
+                    </div>
+                    <div class="roadmap-marker"></div>
+                </div>
+                
+                <div class="roadmap-item">
+                    <div class="roadmap-content">
+                        <div class="roadmap-phase">Q3 2025 - Ecosystem Expansion</div>
+                        <h3 class="roadmap-title">Advanced Features</h3>
+                        <p class="roadmap-description">Expanding capabilities and integrations</p>
+                        <ul class="roadmap-features">
+                            <li>Smart Contract Auditor AI</li>
+                            <li>Yield Optimization Agent</li>
+                            <li>Cross-Chain Bridge Integration</li>
+                            <li>Governance Portal Launch</li>
+                            <li>Mobile App Beta</li>
+                        </ul>
+                    </div>
+                    <div class="roadmap-marker"></div>
+                </div>
+                
+                <div class="roadmap-item">
+                    <div class="roadmap-content">
+                        <div class="roadmap-phase">Q4 2025 - Enterprise Solutions</div>
+                        <h3 class="roadmap-title">Institutional Adoption</h3>
+                        <p class="roadmap-description">Building for enterprise and institutional clients</p>
+                        <ul class="roadmap-features">
+                            <li>Enterprise AI Agent Suite</li>
+                            <li>API & Webhook Integrations</li>
+                            <li>Advanced Analytics Dashboard</li>
+                            <li>Institutional Partnerships</li>
+                            <li>Major CEX Listings (Tier 1)</li>
+                        </ul>
+                    </div>
+                    <div class="roadmap-marker"></div>
+                </div>
+                
+                <div class="roadmap-item">
+                    <div class="roadmap-content">
+                        <div class="roadmap-phase">2026 - AI Ecosystem</div>
+                        <h3 class="roadmap-title">Full Ecosystem</h3>
+                        <p class="roadmap-description">Creating the complete AI agent marketplace</p>
+                        <ul class="roadmap-features">
+                            <li>AI Agent Marketplace Launch</li>
+                            <li>Custom Agent Builder Platform</li>
+                            <li>Multi-Chain Expansion</li>
+                            <li>AI Model Training Platform</li>
+                            <li>Decentralized AI Compute Network</li>
+                        </ul>
+                    </div>
+                    <div class="roadmap-marker"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section id="technology">
+        <div class="container">
+            <div class="section-header">
+                <h2>Technology Stack</h2>
+                <p>Built on cutting-edge blockchain and AI infrastructure</p>
+            </div>
+            
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">⛓️</div>
+                    <h3>Aptos Blockchain</h3>
+                    <p><strong>Move Language:</strong> Safe, secure smart contracts<br>
+                    <strong>160,000+ TPS:</strong> Unmatched transaction speed<br>
+                    <strong>Sub-second finality:</strong> Instant confirmations</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🧠</div>
+                    <h3>AI Models</h3>
+                    <p><strong>Machine Learning:</strong> Advanced prediction algorithms<br>
+                    <strong>Deep Learning:</strong> Pattern recognition & analysis<br>
+                    <strong>NLP:</strong> Natural language processing for insights</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">🔐</div>
+                    <h3>Security</h3>
+                    <p><strong>Multi-sig wallets:</strong> Enhanced fund security<br>
+                    <strong>Audited contracts:</strong> Third-party verified<br>
+                    <strong>Encrypted data:</strong> Privacy-first approach</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section>
+        <div class="container">
+            <div class="cta-section">
+                <h2>Join the AI Agent Revolution</h2>
+                <p>Be part of the future where AI agents power decentralized finance</p>
+                <div class="cta-buttons">
+                    <a href="#" class="btn btn-primary">Buy CYBAI</a>
+                    <a href="#" class="btn btn-secondary">Read Docs</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">Twitter</a>
+                <a href="#">Telegram</a>
+                <a href="#">Discord</a>
+                <a href="#">GitHub</a>
+                <a href="#">Medium</a>
+            </div>
+            <p class="copyright">© 2025 CyberAI. All rights reserved. | Contract: 0x39d3798932448b81d524801f72f987502bd294f5a9327a56cd4226317eb88c36</p>
+        </div>
+    </footer>
+</body>
+</html>
