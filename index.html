@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CyberAI (CYBAI) - Litepaper | AI Agent Economy on Aptos</title>
+    <meta name="description" content="CyberAI - Next-generation AI agents powered by Aptos blockchain. Utility + AI Product Token with 65M supply.">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -167,8 +168,20 @@
         .tagline {
             font-size: 1.3rem;
             color: var(--text-secondary);
-            margin-bottom: 30px;
+            margin-bottom: 15px;
             font-weight: 300;
+        }
+
+        .token-type {
+            display: inline-block;
+            font-size: 1rem;
+            color: var(--primary-cyan);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 8px 20px;
+            border-radius: 25px;
+            margin-bottom: 30px;
+            font-weight: 500;
         }
 
         .hero-stats {
@@ -204,14 +217,78 @@
         .stat-value {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.8rem;
-            font-weight: 700;
             color: var(--primary-cyan);
+            font-weight: 700;
             margin-top: 5px;
+        }
+
+        /* Contract Address Section */
+        .contract-section {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 40px auto;
+            max-width: 900px;
+            backdrop-filter: blur(10px);
+        }
+
+        .contract-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .contract-address {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--primary-cyan);
+            word-break: break-all;
+            background: rgba(0, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .contract-address:hover {
+            background: rgba(0, 255, 255, 0.1);
+            border-color: var(--primary-cyan);
+        }
+
+        .contract-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .contract-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(0, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .contract-link:hover {
+            background: rgba(0, 255, 255, 0.15);
+            border-color: var(--primary-cyan);
+            transform: translateY(-2px);
         }
 
         /* Section Styles */
         section {
-            padding: 80px 0;
+            padding: 80px 20px;
         }
 
         .section-header {
@@ -221,8 +298,7 @@
 
         .section-header h2 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.8rem;
-            font-weight: 700;
+            font-size: 2.5rem;
             margin-bottom: 15px;
             background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
             -webkit-background-clip: text;
@@ -231,13 +307,11 @@
         }
 
         .section-header p {
-            font-size: 1.2rem;
             color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto;
+            font-size: 1.1rem;
         }
 
-        /* Cards */
+        /* Cards Grid */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -251,21 +325,7 @@
             border-radius: 20px;
             padding: 35px;
             backdrop-filter: blur(10px);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-cyan), var(--primary-purple));
-            transform: scaleX(0);
-            transition: transform 0.4s ease;
+            transition: all 0.3s ease;
         }
 
         .card:hover {
@@ -274,21 +334,16 @@
             transform: translateY(-10px);
         }
 
-        .card:hover::before {
-            transform: scaleX(1);
-        }
-
         .card-icon {
-            font-size: 2.5rem;
+            font-size: 3rem;
             margin-bottom: 20px;
-            display: inline-block;
         }
 
         .card h3 {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.5rem;
-            color: var(--primary-cyan);
             margin-bottom: 15px;
+            color: var(--primary-cyan);
         }
 
         .card p {
@@ -296,12 +351,12 @@
             line-height: 1.8;
         }
 
-        /* Tokenomics */
-        .tokenomics-breakdown {
+        /* Tokenomics Section */
+        .tokenomics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
-            margin-top: 40px;
+            margin-top: 50px;
         }
 
         .token-allocation {
@@ -309,140 +364,63 @@
             border: 2px solid var(--border-color);
             border-radius: 15px;
             padding: 25px;
-            text-align: center;
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .token-allocation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 4px;
+            width: var(--percent);
+            background: linear-gradient(90deg, var(--primary-cyan), var(--primary-purple));
+            transition: width 0.3s ease;
         }
 
         .token-allocation:hover {
             border-color: var(--primary-cyan);
+            transform: translateY(-5px);
             box-shadow: 0 10px 30px var(--accent-glow);
         }
 
-        .allocation-percentage {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+        .allocation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
-        .allocation-label {
+        .allocation-category {
+            font-family: 'Orbitron', sans-serif;
             font-size: 1.1rem;
             color: var(--text-primary);
             font-weight: 600;
-            margin-bottom: 8px;
+        }
+
+        .allocation-percent {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.4rem;
+            color: var(--primary-cyan);
+            font-weight: 700;
         }
 
         .allocation-amount {
-            font-family: 'Space Mono', monospace;
-            color: var(--text-secondary);
             font-size: 0.95rem;
-        }
-
-        /* Roadmap */
-        .roadmap-timeline {
-            position: relative;
-            padding: 40px 0;
-        }
-
-        .roadmap-timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: linear-gradient(180deg, var(--primary-cyan), var(--primary-purple));
-            transform: translateX(-50%);
-        }
-
-        .roadmap-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 60px;
-            position: relative;
-        }
-
-        .roadmap-item:nth-child(odd) {
-            flex-direction: row;
-        }
-
-        .roadmap-item:nth-child(even) {
-            flex-direction: row-reverse;
-        }
-
-        .roadmap-content {
-            width: 45%;
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 20px;
-            padding: 30px;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .roadmap-content:hover {
-            border-color: var(--primary-cyan);
-            box-shadow: 0 15px 40px var(--accent-glow);
-        }
-
-        .roadmap-phase {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            color: var(--primary-cyan);
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            color: var(--text-secondary);
             margin-bottom: 10px;
         }
 
-        .roadmap-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            color: var(--text-primary);
-            margin-bottom: 15px;
-        }
-
-        .roadmap-description {
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: 15px;
-        }
-
-        .roadmap-features {
-            list-style: none;
-            padding: 0;
-        }
-
-        .roadmap-features li {
-            color: var(--text-secondary);
-            padding: 8px 0;
-            padding-left: 25px;
-            position: relative;
-        }
-
-        .roadmap-features li::before {
-            content: '▸';
-            position: absolute;
-            left: 0;
-            color: var(--primary-cyan);
-            font-weight: bold;
-        }
-
-        .roadmap-marker {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 20px;
-            background: var(--primary-cyan);
-            border: 4px solid var(--dark-bg);
-            border-radius: 50%;
-            box-shadow: 0 0 20px var(--accent-glow);
-            z-index: 2;
+        .allocation-vesting {
+            font-size: 0.85rem;
+            color: var(--primary-purple);
+            background: rgba(138, 43, 226, 0.1);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
         }
 
         /* Use Cases */
@@ -450,10 +428,11 @@
             background: var(--card-bg);
             border: 2px solid var(--border-color);
             border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 30px;
+            padding: 35px;
+            margin-bottom: 25px;
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .use-case-card:hover {
@@ -463,48 +442,154 @@
         }
 
         .use-case-number {
+            position: absolute;
+            top: 20px;
+            right: 30px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 3rem;
+            font-size: 4rem;
             font-weight: 900;
-            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
+            color: rgba(0, 255, 255, 0.1);
         }
 
         .use-case-title {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.8rem;
-            color: var(--text-primary);
             margin-bottom: 15px;
+            color: var(--primary-cyan);
         }
 
         .use-case-description {
             color: var(--text-secondary);
             line-height: 1.8;
+            font-size: 1.05rem;
         }
 
-        /* Footer CTA */
-        .cta-section {
-            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(138, 43, 226, 0.1));
+        /* Roadmap */
+        .roadmap-timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .roadmap-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--primary-cyan), var(--primary-purple));
+            transform: translateX(-50%);
+        }
+
+        .roadmap-item {
+            position: relative;
+            margin-bottom: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .roadmap-item:nth-child(odd) .roadmap-content {
+            margin-right: auto;
+            text-align: right;
+            padding-right: 50px;
+        }
+
+        .roadmap-item:nth-child(even) .roadmap-content {
+            margin-left: auto;
+            text-align: left;
+            padding-left: 50px;
+        }
+
+        .roadmap-content {
+            width: 45%;
+            background: var(--card-bg);
             border: 2px solid var(--border-color);
-            border-radius: 30px;
-            padding: 60px 40px;
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .roadmap-content:hover {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+
+        .roadmap-marker {
+            position: absolute;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: var(--primary-cyan);
+            border: 4px solid var(--dark-bg);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px var(--accent-glow);
+            z-index: 2;
+        }
+
+        .roadmap-phase {
+            font-family: 'Space Mono', monospace;
+            color: var(--primary-cyan);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .roadmap-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .roadmap-description {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .roadmap-features {
+            list-style: none;
+            padding: 0;
+        }
+
+        .roadmap-features li {
+            color: var(--text-secondary);
+            padding: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        .roadmap-features li::before {
+            content: '▹ ';
+            color: var(--primary-cyan);
+            font-weight: bold;
+        }
+
+        /* CTA Section */
+        .cta-section {
             text-align: center;
-            margin: 80px 0;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            padding: 60px 40px;
+            backdrop-filter: blur(10px);
         }
 
         .cta-section h2 {
             font-family: 'Orbitron', sans-serif;
             font-size: 2.5rem;
             margin-bottom: 20px;
-            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .cta-section p {
-            font-size: 1.2rem;
             color: var(--text-secondary);
+            font-size: 1.2rem;
             margin-bottom: 30px;
         }
 
@@ -516,27 +601,24 @@
         }
 
         .btn {
-            font-family: 'Orbitron', sans-serif;
             padding: 15px 40px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            border-radius: 12px;
             text-decoration: none;
-            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
-            letter-spacing: 1px;
-            text-transform: uppercase;
             display: inline-block;
         }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
-            color: var(--text-primary);
-            box-shadow: 0 5px 25px var(--accent-glow);
+            color: var(--dark-bg);
+            box-shadow: 0 10px 30px var(--accent-glow);
         }
 
         .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 40px var(--accent-glow);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px var(--accent-glow);
         }
 
         .btn-secondary {
@@ -548,14 +630,15 @@
         .btn-secondary:hover {
             background: var(--primary-cyan);
             color: var(--dark-bg);
+            transform: translateY(-5px);
         }
 
         /* Footer */
         .footer {
-            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
             padding: 40px 20px;
+            text-align: center;
             border-top: 1px solid var(--border-color);
-            margin-top: 80px;
         }
 
         .footer-links {
@@ -569,16 +652,19 @@
         .footer-links a {
             color: var(--text-secondary);
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            font-weight: 500;
         }
 
         .footer-links a:hover {
             color: var(--primary-cyan);
+            text-shadow: 0 0 10px var(--accent-glow);
         }
 
         .copyright {
             color: var(--text-secondary);
             font-size: 0.9rem;
+            line-height: 1.8;
         }
 
         /* Animations */
@@ -588,40 +674,58 @@
         }
 
         @keyframes rotateHex {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .roadmap-timeline::before { left: 30px; }
-            .roadmap-item { flex-direction: column !important; align-items: flex-start; padding-left: 60px; }
-            .roadmap-content { width: 100%; }
-            .roadmap-marker { left: 30px; }
-        }
-
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .brand-title { font-size: 3rem; }
-            .hero-stats { flex-direction: column; }
-            .section-header h2 { font-size: 2rem; }
-            .cards-grid { grid-template-columns: 1fr; }
+            .brand-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-stats {
+                gap: 20px;
+            }
+
+            .stat-item {
+                padding: 15px 20px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .roadmap-timeline::before {
+                left: 30px;
+            }
+
+            .roadmap-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .roadmap-item:nth-child(odd) .roadmap-content,
+            .roadmap-item:nth-child(even) .roadmap-content {
+                width: 100%;
+                margin: 0;
+                padding-left: 60px;
+                text-align: left;
+            }
+
+            .roadmap-marker {
+                left: 30px;
+            }
+
+            .contract-address {
+                font-size: 0.75rem;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Hero Section -->
-    <div class="hero">
+    <section class="hero">
         <div class="container">
             <div class="logo-section">
                 <div class="logo-container">
@@ -635,58 +739,79 @@
                         <div class="circuit-line"></div>
                     </div>
                 </div>
+                
                 <div>
                     <h1 class="brand-title">
                         <span class="cyber">CYBER</span><span class="ai">AI</span>
                     </h1>
                     <div class="token-symbol">$CYBAI</div>
+                    <p class="tagline">AI Agent Economy on Aptos Blockchain</p>
+                    <span class="token-type">Utility + AI Product Token</span>
                 </div>
             </div>
-            
-            <p class="tagline">Powering the AI Agent Economy on Aptos Blockchain</p>
-            
+
             <div class="hero-stats">
                 <div class="stat-item">
                     <div class="stat-label">Total Supply</div>
-                    <div class="stat-value">765M</div>
+                    <div class="stat-value">65,000,000</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-label">Network</div>
+                    <div class="stat-label">Blockchain</div>
                     <div class="stat-value">Aptos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Token Type</div>
+                    <div class="stat-value">Utility + AI</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-label">Decimals</div>
                     <div class="stat-value">8</div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Vision Section -->
-    <section id="vision">
+            <!-- Contract Address -->
+            <div class="contract-section">
+                <div class="contract-label">Token Contract Address</div>
+                <div class="contract-address" onclick="copyToClipboard(this.textContent)" title="Click to copy">
+                    0xbec3aa501c21bac405aa4436ef55df506e6a944086971bb33133310185afb65e4
+                </div>
+                <div class="contract-links">
+                    <a href="https://explorer.aptoslabs.com/fungible_asset/0xbec3aa501c21bac405aa4436ef55df506e6a944086971bb33133310185afb65e4?network=mainnet" target="_blank" class="contract-link">
+                        🔍 View on Explorer
+                    </a>
+                    <a href="https://explorer.aptoslabs.com/account/0xf84a8426c3941b00d765e0fcb5e2cbdc14661bae0a71b5c4e05d9f2953779591?network=mainnet" target="_blank" class="contract-link">
+                        📝 View Module
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
         <div class="container">
             <div class="section-header">
-                <h2>Our Vision</h2>
-                <p>Building the future of autonomous AI agents on the fastest blockchain</p>
+                <h2>About CyberAI</h2>
+                <p>Building the Future of AI-Powered Decentralized Finance</p>
             </div>
             
             <div class="cards-grid">
                 <div class="card">
                     <div class="card-icon">🤖</div>
-                    <h3>Autonomous AI Agents</h3>
-                    <p>Deploy self-operating AI agents that execute complex tasks, trade autonomously, and provide intelligent automation across the Aptos ecosystem.</p>
+                    <h3>AI Agent Marketplace</h3>
+                    <p>Deploy, trade, and monetize autonomous AI agents that perform complex tasks in the crypto ecosystem. From trading bots to yield optimizers, create and sell AI-powered solutions.</p>
                 </div>
                 
                 <div class="card">
                     <div class="card-icon">⚡</div>
-                    <h3>Powered by Aptos</h3>
-                    <p>Leveraging Aptos's 160,000+ TPS and sub-second finality for lightning-fast AI agent transactions with minimal latency.</p>
+                    <h3>Aptos-Powered</h3>
+                    <p>Built on Aptos blockchain for unmatched speed (160,000+ TPS), security, and scalability. Move programming language ensures type-safe, secure smart contracts.</p>
                 </div>
                 
                 <div class="card">
-                    <div class="card-icon">🔗</div>
-                    <h3>Decentralized Intelligence</h3>
-                    <p>Create a network of interconnected AI agents that collaborate, share insights, and evolve through collective learning.</p>
+                    <div class="card-icon">💎</div>
+                    <h3>Utility Token</h3>
+                    <p>CYBAI powers the entire ecosystem - pay for AI agent services, stake for rewards, participate in governance, and access premium features.</p>
                 </div>
             </div>
         </div>
@@ -697,58 +822,71 @@
         <div class="container">
             <div class="section-header">
                 <h2>Tokenomics</h2>
-                <p>Fair distribution designed for sustainable growth and community empowerment</p>
+                <p>Balanced distribution designed for long-term growth and sustainability</p>
             </div>
-            
-            <div class="tokenomics-breakdown">
-                <div class="token-allocation">
-                    <div class="allocation-percentage">40%</div>
-                    <div class="allocation-label">Public Sale & Liquidity</div>
-                    <div class="allocation-amount">306,000,000 CYBAI</div>
+
+            <div class="tokenomics-grid">
+                <div class="token-allocation" style="--percent: 18%;">
+                    <div class="allocation-header">
+                        <span class="allocation-category">Public Sale</span>
+                        <span class="allocation-percent">18%</span>
+                    </div>
+                    <div class="allocation-amount">11,700,000 CYBAI</div>
+                    <div class="allocation-vesting">20% TGE + 6 month linear unlock</div>
                 </div>
-                
-                <div class="token-allocation">
-                    <div class="allocation-percentage">25%</div>
-                    <div class="allocation-label">AI Development Fund</div>
-                    <div class="allocation-amount">191,250,000 CYBAI</div>
+
+                <div class="token-allocation" style="--percent: 15%;">
+                    <div class="allocation-header">
+                        <span class="allocation-category">Liquidity</span>
+                        <span class="allocation-percent">15%</span>
+                    </div>
+                    <div class="allocation-amount">9,750,000 CYBAI</div>
+                    <div class="allocation-vesting">100% at launch (DEX pools)</div>
                 </div>
-                
-                <div class="token-allocation">
-                    <div class="allocation-percentage">15%</div>
-                    <div class="allocation-label">Team & Advisors</div>
-                    <div class="allocation-amount">114,750,000 CYBAI</div>
+
+                <div class="token-allocation" style="--percent: 15%;">
+                    <div class="allocation-header">
+                        <span class="allocation-category">Team</span>
+                        <span class="allocation-percent">15%</span>
+                    </div>
+                    <div class="allocation-amount">9,750,000 CYBAI</div>
+                    <div class="allocation-vesting">12 month cliff + 24 month vest</div>
                 </div>
-                
-                <div class="token-allocation">
-                    <div class="allocation-percentage">10%</div>
-                    <div class="allocation-label">Community Rewards</div>
-                    <div class="allocation-amount">76,500,000 CYBAI</div>
+
+                <div class="token-allocation" style="--percent: 20%;">
+                    <div class="allocation-header">
+                        <span class="allocation-category">Ecosystem</span>
+                        <span class="allocation-percent">20%</span>
+                    </div>
+                    <div class="allocation-amount">13,000,000 CYBAI</div>
+                    <div class="allocation-vesting">Gradual release over 36 months</div>
                 </div>
-                
-                <div class="token-allocation">
-                    <div class="allocation-percentage">10%</div>
-                    <div class="allocation-label">Ecosystem Growth</div>
-                    <div class="allocation-amount">76,500,000 CYBAI</div>
+
+                <div class="token-allocation" style="--percent: 12%;">
+                    <div class="allocation-header">
+                        <span class="allocation-category">Staking Rewards</span>
+                        <span class="allocation-percent">12%</span>
+                    </div>
+                    <div class="allocation-amount">7,800,000 CYBAI</div>
+                    <div class="allocation-vesting">Distributed over 3 years</div>
                 </div>
-            </div>
-            
-            <div class="cards-grid" style="margin-top: 60px;">
-                <div class="card">
-                    <div class="card-icon">🔥</div>
-                    <h3>Burn Mechanism</h3>
-                    <p>5% of all AI agent service fees are burned, creating deflationary pressure and increasing scarcity over time.</p>
+
+                <div class="token-allocation" style="--percent: 10%;">
+                    <div class="allocation-header">
+                        <span class="allocation-category">Treasury</span>
+                        <span class="allocation-percent">10%</span>
+                    </div>
+                    <div class="allocation-amount">6,500,000 CYBAI</div>
+                    <div class="allocation-vesting">DAO controlled reserves</div>
                 </div>
-                
-                <div class="card">
-                    <div class="card-icon">💎</div>
-                    <h3>Staking Rewards</h3>
-                    <p>Stake CYBAI tokens to run your own AI agent nodes and earn rewards from network operations and service fees.</p>
-                </div>
-                
-                <div class="card">
-                    <div class="card-icon">🏛️</div>
-                    <h3>Governance</h3>
-                    <p>Token holders vote on AI model updates, feature implementations, and fund allocation through decentralized governance.</p>
+
+                <div class="token-allocation" style="--percent: 10%;">
+                    <div class="allocation-header">
+                        <span class="allocation-category">Marketing</span>
+                        <span class="allocation-percent">10%</span>
+                    </div>
+                    <div class="allocation-amount">6,500,000 CYBAI</div>
+                    <div class="allocation-vesting">Controlled release for growth</div>
                 </div>
             </div>
         </div>
@@ -809,11 +947,11 @@
                         <h3 class="roadmap-title">Foundation</h3>
                         <p class="roadmap-description">Establishing the core infrastructure and initial token distribution</p>
                         <ul class="roadmap-features">
-                            <li>Token Generation Event (TGE) on Aptos</li>
+                            <li>Token Generation Event (TGE) on Aptos ✅</li>
                             <li>DEX Listings & Liquidity Pools</li>
                             <li>Community Building & Marketing Campaign</li>
                             <li>Smart Contract Audits</li>
-                            <li>Website & Documentation Launch</li>
+                            <li>Website & Documentation Launch ✅</li>
                         </ul>
                     </div>
                     <div class="roadmap-marker"></div>
@@ -914,9 +1052,9 @@
                 <div class="card">
                     <div class="card-icon">🔐</div>
                     <h3>Security</h3>
-                    <p><strong>Multi-sig wallets:</strong> Enhanced fund security<br>
-                    <strong>Audited contracts:</strong> Third-party verified<br>
-                    <strong>Encrypted data:</strong> Privacy-first approach</p>
+                    <p><strong>Decentralized:</strong> No admin control over tokens<br>
+                    <strong>Audited contracts:</strong> Professional security review<br>
+                    <strong>Fixed supply:</strong> No minting capability</p>
                 </div>
             </div>
         </div>
@@ -929,8 +1067,8 @@
                 <h2>Join the AI Agent Revolution</h2>
                 <p>Be part of the future where AI agents power decentralized finance</p>
                 <div class="cta-buttons">
-                    <a href="#" class="btn btn-primary">Buy CYBAI</a>
-                    <a href="#" class="btn btn-secondary">Read Docs</a>
+                    <a href="https://explorer.aptoslabs.com/fungible_asset/0xbec3aa501c21bac405aa4436ef55df506e6a944086971bb33133310185afb65e4?network=mainnet" target="_blank" class="btn btn-primary">View Token</a>
+                    <a href="#about" class="btn btn-secondary">Learn More</a>
                 </div>
             </div>
         </div>
@@ -940,14 +1078,28 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-links">
-                <a href="#">Twitter</a>
-                <a href="#">Telegram</a>
-                <a href="#">Discord</a>
-                <a href="#">GitHub</a>
-                <a href="#">Medium</a>
+                <a href="#" target="_blank">Twitter</a>
+                <a href="#" target="_blank">Telegram</a>
+                <a href="#" target="_blank">Discord</a>
+                <a href="https://github.com/cyberai" target="_blank">GitHub</a>
+                <a href="#" target="_blank">Medium</a>
             </div>
-            <p class="copyright">© 2025 CyberAI. All rights reserved. | Contract: 0x39d3798932448b81d524801f72f987502bd294f5a9327a56cd4226317eb88c36</p>
+            <p class="copyright">
+                © 2025 CyberAI. All rights reserved.<br>
+                Token Contract: 0xbec3aa501c21bac405aa4436ef55df506e6a944086971bb33133310185afb65e4<br>
+                Module: 0xf84a8426c3941b00d765e0fcb5e2cbdc14661bae0a71b5c4e05d9f2953779591::token
+            </p>
         </div>
     </footer>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Contract address copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+    </script>
 </body>
 </html>
