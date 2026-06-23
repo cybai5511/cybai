@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Trading Bot Demo — CyberAI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cyan:#00f5ff; --cyan-glow:rgba(0,245,255,0.28); --cyan-dim:rgba(0,245,255,0.08);
+            --purple:#7b2fff; --green:#00ff88; --red:#ff3b5c; --yellow:#ffc400;
+            --bg:#04060f; --bg2:#080d1e; --card:rgba(255,255,255,0.03);
+            --border:rgba(0,245,255,0.14); --text:#e8f4ff; --muted:#7a9bb5;
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+        body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,245,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,0.025) 1px,transparent 1px);background-size:50px 50px;z-index:0;pointer-events:none;}
+
+        nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(4,6,15,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+        .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+        .nav-logo{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--cyan);box-shadow:0 0 10px var(--cyan-glow);object-fit:cover;}
+        .nav-name{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:700;color:var(--cyan);letter-spacing:2px;}
+        .nav-back{color:var(--muted);text-decoration:none;font-size:0.88rem;font-weight:600;letter-spacing:1px;transition:color 0.2s;}
+        .nav-back:hover{color:var(--cyan);}
+
+        .page{min-height:100vh;padding:80px 20px 50px;position:relative;z-index:1;}
+        .container{max-width:1100px;margin:0 auto;}
+
+        .page-header{text-align:center;margin-bottom:40px;}
+        .badge{display:inline-flex;align-items:center;gap:7px;padding:4px 14px;border:1px solid rgba(0,255,136,0.3);border-radius:100px;color:var(--green);font-size:0.75rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;background:rgba(0,255,136,0.06);}
+        .badge .dot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:blink 1.5s ease-in-out infinite;}
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+        .page-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;letter-spacing:2px;}
+        .page-title .cyan{color:var(--cyan);text-shadow:0 0 30px var(--cyan-glow);}
+        .page-sub{color:var(--muted);font-size:1rem;margin-top:8px;}
+
+        /* MAIN GRID */
+        .main-grid{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:start;}
+
+        /* LEFT COLUMN */
+        .left-col{display:flex;flex-direction:column;gap:22px;}
+
+        /* Card */
+        .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px;backdrop-filter:blur(10px);}
+        .card-title{font-family:'Orbitron',sans-serif;font-size:0.8rem;font-weight:700;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+
+        /* BOT CONFIG */
+        .config-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+        .cfg-field{display:flex;flex-direction:column;gap:6px;}
+        .cfg-label{font-size:0.78rem;color:var(--muted);font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+        .cfg-select,.cfg-input{
+            background:rgba(0,0,0,0.4);
+            border:1px solid rgba(0,245,255,0.2);
+            border-radius:8px;
+            padding:9px 12px;
+            color:var(--text);
+            font-family:'Rajdhani',sans-serif;
+            font-size:0.95rem;
+            font-weight:600;
+            outline:none;
+            transition:border-color 0.2s;
+            cursor:pointer;
+        }
+        .cfg-select:hover,.cfg-input:hover{border-color:var(--cyan);}
+        .cfg-select:focus,.cfg-input:focus{border-color:var(--cyan);box-shadow:0 0 10px var(--cyan-dim);}
+        .cfg-select option{background:#080d1e;}
+
+        .run-btn{
+            width:100%;
+            padding:14px;
+            margin-top:16px;
+            border:none;
+            border-radius:10px;
+            background:linear-gradient(135deg,var(--cyan),var(--purple));
+            color:#04060f;
+            font-family:'Orbitron',sans-serif;
+            font-size:0.9rem;
+            font-weight:700;
+            letter-spacing:2px;
+            cursor:pointer;
+            transition:all 0.28s;
+            box-shadow:0 6px 24px rgba(0,245,255,0.2);
+        }
+        .run-btn:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,245,255,0.3);}
+        .run-btn:active{transform:translateY(0);}
+        .run-btn.running{background:linear-gradient(135deg,#ff3b5c,#ff7b00);animation:pulse-btn 1s ease-in-out infinite;}
+        @keyframes pulse-btn{0%,100%{box-shadow:0 6px 24px rgba(255,59,92,0.3)}50%{box-shadow:0 6px 40px rgba(255,59,92,0.6)}}
+
+        /* SIGNAL DASHBOARD */
+        .signals-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+        .signal-box{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:14px;text-align:center;transition:all 0.3s;}
+        .signal-box.active-buy{border-color:var(--green);box-shadow:0 0 20px rgba(0,255,136,0.15);}
+        .signal-box.active-sell{border-color:var(--red);box-shadow:0 0 20px rgba(255,59,92,0.15);}
+        .signal-name{font-size:0.72rem;color:var(--muted);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+        .signal-val{font-family:'Space Mono',monospace;font-size:1rem;font-weight:700;}
+        .signal-val.buy{color:var(--green);}
+        .signal-val.sell{color:var(--red);}
+        .signal-val.neutral{color:var(--muted);}
+        .signal-bar{height:4px;border-radius:2px;margin-top:8px;background:rgba(255,255,255,0.06);overflow:hidden;}
+        .signal-bar-fill{height:100%;border-radius:2px;transition:width 0.8s ease;}
+        .signal-bar-fill.green{background:var(--green);}
+        .signal-bar-fill.red{background:var(--red);}
+        .signal-bar-fill.yellow{background:var(--yellow);}
+
+        /* P&L TRACKER */
+        .pnl-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(0,245,255,0.05);}
+        .pnl-row:last-child{border-bottom:none;}
+        .pnl-key{color:var(--muted);font-size:0.88rem;}
+        .pnl-val{font-family:'Space Mono',monospace;font-size:0.92rem;}
+        .pnl-val.pos{color:var(--green);}
+        .pnl-val.neg{color:var(--red);}
+        .pnl-val.neutral{color:var(--text);}
+        .pnl-val.cyan{color:var(--cyan);}
+
+        /* TERMINAL */
+        .terminal{background:#000;border:1px solid rgba(0,245,255,0.2);border-radius:12px;overflow:hidden;font-family:'Space Mono',monospace;font-size:0.78rem;}
+        .terminal-bar{background:#0d1117;padding:10px 16px;border-bottom:1px solid rgba(0,245,255,0.1);display:flex;align-items:center;gap:8px;}
+        .t-dot{width:10px;height:10px;border-radius:50%;}
+        .t-dot.r{background:#ff5f57;} .t-dot.y{background:#febc2e;} .t-dot.g{background:#28c840;}
+        .terminal-label{color:var(--muted);font-size:0.7rem;letter-spacing:2px;margin-left:8px;}
+        .terminal-body{height:340px;overflow-y:auto;padding:16px;scroll-behavior:smooth;}
+        .terminal-body::-webkit-scrollbar{width:4px;}
+        .terminal-body::-webkit-scrollbar-track{background:transparent;}
+        .terminal-body::-webkit-scrollbar-thumb{background:rgba(0,245,255,0.2);border-radius:2px;}
+        .log-line{padding:3px 0;line-height:1.55;display:flex;gap:12px;flex-wrap:wrap;}
+        .log-time{color:#3d5269;flex-shrink:0;}
+        .log-buy{color:var(--green);}
+        .log-sell{color:var(--red);}
+        .log-info{color:var(--cyan);}
+        .log-warn{color:var(--yellow);}
+        .log-neutral{color:#4a6278;}
+        .log-profit{color:var(--green);font-weight:700;}
+        .cursor{display:inline-block;width:7px;height:13px;background:var(--cyan);animation:cur 1s step-end infinite;vertical-align:middle;margin-left:3px;}
+        @keyframes cur{0%,100%{opacity:1}50%{opacity:0}}
+
+        /* TRADE HISTORY */
+        .trade-table{width:100%;border-collapse:collapse;}
+        .trade-table th{font-size:0.72rem;color:var(--muted);font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 10px;text-align:left;border-bottom:1px solid rgba(0,245,255,0.1);}
+        .trade-table td{font-size:0.82rem;padding:9px 10px;border-bottom:1px solid rgba(255,255,255,0.03);}
+        .trade-table tr:last-child td{border-bottom:none;}
+        .trade-table tr:hover td{background:rgba(0,245,255,0.02);}
+        .td-buy{color:var(--green);font-weight:700;font-family:'Space Mono',monospace;font-size:0.72rem;}
+        .td-sell{color:var(--red);font-weight:700;font-family:'Space Mono',monospace;font-size:0.72rem;}
+        .td-profit{color:var(--green);font-family:'Space Mono',monospace;font-size:0.75rem;}
+        .td-loss{color:var(--red);font-family:'Space Mono',monospace;font-size:0.75rem;}
+        .td-mono{font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--muted);}
+
+        /* HOW IT WORKS */
+        .how-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:4px;}
+        .how-step{background:rgba(0,0,0,0.25);border:1px solid rgba(0,245,255,0.08);border-radius:10px;padding:16px;text-align:center;}
+        .how-num{font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:900;color:rgba(0,245,255,0.15);margin-bottom:8px;}
+        .how-icon{font-size:1.6rem;margin-bottom:8px;}
+        .how-title{font-size:0.9rem;font-weight:700;color:var(--text);margin-bottom:6px;}
+        .how-desc{font-size:0.8rem;color:var(--muted);line-height:1.5;}
+        .arrow{color:rgba(0,245,255,0.2);font-size:1.2rem;display:flex;align-items:center;}
+
+        /* DISCLAIMER */
+        .disclaimer{background:rgba(255,200,0,0.04);border:1px solid rgba(255,200,0,0.18);border-radius:10px;padding:14px 18px;font-size:0.8rem;color:rgba(255,200,0,0.7);margin-top:4px;line-height:1.6;}
+        .disclaimer strong{color:var(--yellow);}
+
+        @media(max-width:800px){.main-grid{grid-template-columns:1fr;}.signals-grid{grid-template-columns:repeat(2,1fr);} nav{padding:0 16px;}}
+    </style>
+</head>
+<body>
+<nav>
+    <a class="nav-brand" href="index.html">
+        <img class="nav-logo" src="https://plum-top-lamprey-24.mypinata.cloud/ipfs/bafybeigwvpsdpcqtpaegmfqc5jf55flm4dungq6sdml5gytwvrzf3imive" alt="CyberAI">
+        <span class="nav-name">CYBERAI</span>
+    </a>
+    <a class="nav-back" href="index.html">← Back to Litepaper</a>
+</nav>
+
+<div class="page">
+<div class="container">
+    <div class="page-header">
+        <div class="badge"><span class="dot"></span> Interactive Demo</div>
+        <h1 class="page-title">AI <span class="cyan">Trading Bot</span></h1>
+        <p class="page-sub">Samjho kaise kaam karta hai — live simulation with real logic</p>
+    </div>
+
+    <!-- HOW IT WORKS BAR -->
+    <div class="card" style="margin-bottom:22px;">
+        <div class="card-title">⚡ Bot Kaise Kaam Karta Hai</div>
+        <div class="how-steps">
+            <div class="how-step">
+                <div class="how-num">01</div>
+                <div class="how-icon">📡</div>
+                <div class="how-title">Market Scan</div>
+                <div class="how-desc">Bot har second price, volume aur order book data monitor karta hai Aptos DEX se</div>
+            </div>
+            <div class="how-step">
+                <div class="how-num">02</div>
+                <div class="how-icon">🧠</div>
+                <div class="how-title">AI Analysis</div>
+                <div class="how-desc">ML model RSI, MACD, momentum aur on-chain signals analyze karke buy/sell signal generate karta hai</div>
+            </div>
+            <div class="how-step">
+                <div class="how-num">03</div>
+                <div class="how-icon">⚡</div>
+                <div class="how-title">Auto Execute</div>
+                <div class="how-desc">Signal confirm hone par bot automatically Aptos DEX par trade execute karta hai — milliseconds mein</div>
+            </div>
+            <div class="how-step">
+                <div class="how-num">04</div>
+                <div class="how-icon">🛡️</div>
+                <div class="how-title">Risk Control</div>
+                <div class="how-desc">Stop-loss, take-profit aur position sizing automatically manage hota hai — capital safe rehta hai</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-grid">
+        <!-- LEFT -->
+        <div class="left-col">
+            <!-- Config -->
+            <div class="card">
+                <div class="card-title">⚙️ Bot Configuration</div>
+                <div class="config-grid">
+                    <div class="cfg-field">
+                        <div class="cfg-label">Trading Pair</div>
+                        <select class="cfg-select" id="pair">
+                            <option value="CYBAI/APT">CYBAI / APT</option>
+                            <option value="APT/USDC">APT / USDC</option>
+                            <option value="APT/USDT">APT / USDT</option>
+                        </select>
+                    </div>
+                    <div class="cfg-field">
+                        <div class="cfg-label">Strategy</div>
+                        <select class="cfg-select" id="strategy">
+                            <option value="momentum">Momentum</option>
+                            <option value="mean_rev">Mean Reversion</option>
+                            <option value="arb">Arbitrage</option>
+                            <option value="trend">Trend Following</option>
+                        </select>
+                    </div>
+                    <div class="cfg-field">
+                        <div class="cfg-label">Trade Size (APT)</div>
+                        <input class="cfg-input" id="tradeSize" type="number" value="10" min="1" max="1000">
+                    </div>
+                    <div class="cfg-field">
+                        <div class="cfg-label">Stop Loss %</div>
+                        <input class="cfg-input" id="stopLoss" type="number" value="2" min="0.5" max="10" step="0.5">
+                    </div>
+                    <div class="cfg-field">
+                        <div class="cfg-label">Take Profit %</div>
+                        <input class="cfg-input" id="takeProfit" type="number" value="4" min="1" max="20" step="0.5">
+                    </div>
+                    <div class="cfg-field">
+                        <div class="cfg-label">Risk Level</div>
+                        <select class="cfg-select" id="risk">
+                            <option value="low">🟢 Low</option>
+                            <option value="med" selected>🟡 Medium</option>
+                            <option value="high">🔴 High</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="run-btn" id="runBtn" onclick="toggleBot()">▶ START BOT SIMULATION</button>
+            </div>
+
+            <!-- Signals -->
+            <div class="card">
+                <div class="card-title">📊 Live Signals</div>
+                <div class="signals-grid">
+                    <div class="signal-box" id="sig-rsi">
+                        <div class="signal-name">RSI (14)</div>
+                        <div class="signal-val neutral" id="rsi-val">—</div>
+                        <div class="signal-bar"><div class="signal-bar-fill yellow" id="rsi-bar" style="width:50%"></div></div>
+                    </div>
+                    <div class="signal-box" id="sig-macd">
+                        <div class="signal-name">MACD</div>
+                        <div class="signal-val neutral" id="macd-val">—</div>
+                        <div class="signal-bar"><div class="signal-bar-fill yellow" id="macd-bar" style="width:50%"></div></div>
+                    </div>
+                    <div class="signal-box" id="sig-mom">
+                        <div class="signal-name">Momentum</div>
+                        <div class="signal-val neutral" id="mom-val">—</div>
+                        <div class="signal-bar"><div class="signal-bar-fill yellow" id="mom-bar" style="width:50%"></div></div>
+                    </div>
+                    <div class="signal-box" id="sig-vol">
+                        <div class="signal-name">Volume</div>
+                        <div class="signal-val neutral" id="vol-val">—</div>
+                        <div class="signal-bar"><div class="signal-bar-fill yellow" id="vol-bar" style="width:50%"></div></div>
+                    </div>
+                    <div class="signal-box" id="sig-trend">
+                        <div class="signal-name">Trend</div>
+                        <div class="signal-val neutral" id="trend-val">—</div>
+                        <div class="signal-bar"><div class="signal-bar-fill yellow" id="trend-bar" style="width:50%"></div></div>
+                    </div>
+                    <div class="signal-box" id="sig-final">
+                        <div class="signal-name">Final Signal</div>
+                        <div class="signal-val neutral" id="final-val">WAIT</div>
+                        <div class="signal-bar"><div class="signal-bar-fill yellow" id="final-bar" style="width:50%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- P&L -->
+            <div class="card">
+                <div class="card-title">💰 Session P&amp;L</div>
+                <div class="pnl-row"><span class="pnl-key">Total Trades</span><span class="pnl-val cyan" id="stat-trades">0</span></div>
+                <div class="pnl-row"><span class="pnl-key">Win Rate</span><span class="pnl-val pos" id="stat-wr">—</span></div>
+                <div class="pnl-row"><span class="pnl-key">Gross Profit</span><span class="pnl-val pos" id="stat-profit">+0.00 APT</span></div>
+                <div class="pnl-row"><span class="pnl-key">Gross Loss</span><span class="pnl-val neg" id="stat-loss">-0.00 APT</span></div>
+                <div class="pnl-row"><span class="pnl-key">Net P&amp;L</span><span class="pnl-val neutral" id="stat-net">0.00 APT</span></div>
+                <div class="pnl-row"><span class="pnl-key">Max Drawdown</span><span class="pnl-val neg" id="stat-dd">0.00%</span></div>
+                <div class="pnl-row"><span class="pnl-key">Bot Status</span><span class="pnl-val" id="stat-status" style="color:var(--muted)">IDLE</span></div>
+            </div>
+
+            <div class="disclaimer">
+                <strong>⚠️ Demo Notice:</strong> Ye ek educational simulation hai. Real trades execute nahi ho rahe. Actual bot performance vary kar sakti hai. Crypto trading mein risk hota hai — sirf utna invest karein jo aap afford kar sakein.
+            </div>
+        </div>
+
+        <!-- RIGHT: TERMINAL + TRADE HISTORY -->
+        <div style="display:flex;flex-direction:column;gap:22px;position:sticky;top:80px;">
+            <!-- Terminal -->
+            <div class="terminal">
+                <div class="terminal-bar">
+                    <div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div>
+                    <span class="terminal-label">CYBERAI BOT — TERMINAL</span>
+                </div>
+                <div class="terminal-body" id="terminal">
+                    <div class="log-line"><span class="log-neutral">CyberAI Trading Bot v2.1.0 initialized</span></div>
+                    <div class="log-line"><span class="log-neutral">Aptos Mainnet connected — RPC: fullnode.aptoslabs.com</span></div>
+                    <div class="log-line"><span class="log-neutral">Waiting for configuration...</span></div>
+                    <div class="log-line"><span class="log-neutral">Press START to begin simulation<span class="cursor"></span></span></div>
+                </div>
+            </div>
+
+            <!-- Trade History -->
+            <div class="card" style="padding:0;overflow:hidden;">
+                <div style="padding:16px 20px;border-bottom:1px solid var(--border);">
+                    <div class="card-title" style="margin:0;">📋 Trade History</div>
+                </div>
+                <div style="overflow-x:auto;max-height:280px;overflow-y:auto;">
+                    <table class="trade-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Type</th>
+                                <th>Price</th>
+                                <th>Size</th>
+                                <th>P&amp;L</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tradeHistory">
+                            <tr><td colspan="5" style="color:var(--muted);text-align:center;padding:20px;font-size:0.82rem;">Bot start karo to trades dikhenge</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+let running = false;
+let interval = null;
+let price = 9.42;
+let tradeCount = 0, wins = 0, losses = 0;
+let grossProfit = 0, grossLoss = 0;
+let inTrade = false;
+let entryPrice = 0;
+let maxEquity = 0, equity = 0;
+let maxDD = 0;
+let tick = 0;
+
+const terminal = document.getElementById('terminal');
+
+function log(msg, cls='log-neutral') {
+    const now = new Date();
+    const t = now.toTimeString().split(' ')[0];
+    const div = document.createElement('div');
+    div.className = 'log-line';
+    div.innerHTML = `<span class="log-time">[${t}]</span><span class="${cls}">${msg}</span>`;
+    terminal.appendChild(div);
+    terminal.scrollTop = terminal.scrollHeight;
+    // keep max 80 lines
+    while(terminal.children.length > 80) terminal.removeChild(terminal.firstChild);
+}
+
+function rand(min, max) { return Math.random() * (max - min) + min; }
+function randInt(min, max) { return Math.floor(rand(min, max+1)); }
+
+function toggleBot() {
+    if (!running) startBot(); else stopBot();
+}
+
+function startBot() {
+    running = true;
+    inTrade = false;
+    price = 9.42 + rand(-0.5, 0.5);
+    equity = 0;
+
+    const btn = document.getElementById('runBtn');
+    btn.textContent = '⏹ STOP BOT';
+    btn.classList.add('running');
+    document.getElementById('stat-status').textContent = 'SCANNING';
+    document.getElementById('stat-status').style.color = 'var(--cyan)';
+    document.getElementById('tradeHistory').innerHTML = '';
+
+    log('═══════════════════════════════', 'log-neutral');
+    log('Bot simulation started!', 'log-info');
+    const pair = document.getElementById('pair').value;
+    const strat = document.getElementById('strategy').options[document.getElementById('strategy').selectedIndex].text;
+    log(`Pair: ${pair} | Strategy: ${strat}`, 'log-info');
+    log(`Trade Size: ${document.getElementById('tradeSize').value} APT`, 'log-info');
+    log(`SL: ${document.getElementById('stopLoss').value}% | TP: ${document.getElementById('takeProfit').value}%`, 'log-info');
+    log('Scanning market signals...', 'log-neutral');
+
+    interval = setInterval(botTick, 1200);
+}
+
+function stopBot() {
+    running = false;
+    clearInterval(interval);
+    const btn = document.getElementById('runBtn');
+    btn.textContent = '▶ START BOT SIMULATION';
+    btn.classList.remove('running');
+    document.getElementById('stat-status').textContent = 'STOPPED';
+    document.getElementById('stat-status').style.color = 'var(--red)';
+    log('Bot stopped by user.', 'log-warn');
+    updateSignals(50, 50, 50, 50, 50, 'IDLE');
+}
+
+function botTick() {
+    tick++;
+    // Simulate price movement
+    const vol = rand(-0.15, 0.15) * (1 + Math.random());
+    price = Math.max(0.001, price + vol);
+
+    // Generate signals (biased random with trend)
+    const rsi = Math.min(100, Math.max(0, 50 + rand(-25, 25) + (inTrade ? rand(-5,5) : rand(-15,15))));
+    const macd = Math.min(100, Math.max(0, 50 + rand(-30, 30)));
+    const mom = Math.min(100, Math.max(0, 50 + rand(-25, 25)));
+    const volSig = Math.min(100, Math.max(0, 50 + rand(-20, 20)));
+    const trend = Math.min(100, Math.max(0, 50 + rand(-20, 20)));
+
+    // Composite signal
+    const composite = (rsi * 0.25 + macd * 0.25 + mom * 0.2 + volSig * 0.15 + trend * 0.15);
+
+    let finalSignal = 'WAIT';
+    if (composite > 65) finalSignal = 'BUY';
+    else if (composite < 35) finalSignal = 'SELL';
+
+    updateSignals(rsi, macd, mom, volSig, trend, finalSignal);
+
+    const sl = parseFloat(document.getElementById('stopLoss').value) / 100;
+    const tp = parseFloat(document.getElementById('takeProfit').value) / 100;
+    const size = parseFloat(document.getElementById('tradeSize').value);
+
+    if (!inTrade) {
+        if (finalSignal === 'BUY') {
+            inTrade = true;
+            entryPrice = price;
+            log(`▶ SIGNAL: BUY detected — Score: ${composite.toFixed(1)}`, 'log-buy');
+            log(`  Executing BUY @ ${price.toFixed(4)} APT`, 'log-buy');
+            document.getElementById('stat-status').textContent = 'IN TRADE';
+            document.getElementById('stat-status').style.color = 'var(--green)';
+        } else if (tick % 3 === 0) {
+            log(`  Scanning... RSI:${rsi.toFixed(0)} MACD:${macd.toFixed(0)} | No signal`, 'log-neutral');
+        }
+    } else {
+        const pnlPct = (price - entryPrice) / entryPrice;
+        if (pnlPct >= tp) {
+            // WIN
+            const pnlApt = size * pnlPct;
+            grossProfit += pnlApt;
+            equity += pnlApt;
+            wins++;
+            log(`✅ TAKE PROFIT HIT @ ${price.toFixed(4)} | +${(pnlPct*100).toFixed(2)}% | +${pnlApt.toFixed(3)} APT`, 'log-buy');
+            addTradeRow('BUY', entryPrice, price, size, pnlApt, true);
+            inTrade = false;
+            tradeCount++;
+            document.getElementById('stat-status').textContent = 'SCANNING';
+            document.getElementById('stat-status').style.color = 'var(--cyan)';
+        } else if (pnlPct <= -sl) {
+            // LOSS
+            const pnlApt = size * pnlPct;
+            grossLoss += Math.abs(pnlApt);
+            equity += pnlApt;
+            losses++;
+            log(`🔴 STOP LOSS HIT @ ${price.toFixed(4)} | ${(pnlPct*100).toFixed(2)}% | ${pnlApt.toFixed(3)} APT`, 'log-sell');
+            addTradeRow('BUY', entryPrice, price, size, pnlApt, false);
+            inTrade = false;
+            tradeCount++;
+            document.getElementById('stat-status').textContent = 'SCANNING';
+            document.getElementById('stat-status').style.color = 'var(--cyan)';
+        } else {
+            if (tick % 2 === 0) log(`  In Trade: ${price.toFixed(4)} | PnL: ${(pnlPct*100).toFixed(2)}%`, pnlPct >= 0 ? 'log-buy' : 'log-sell');
+        }
+        maxEquity = Math.max(maxEquity, equity);
+        if (maxEquity > 0) {
+            const dd = (maxEquity - equity) / maxEquity * 100;
+            maxDD = Math.max(maxDD, dd);
+        }
+    }
+
+    updateStats();
+}
+
+function updateSignals(rsi, macd, mom, vol, trend, finalSig) {
+    const set = (id, barId, val, pct) => {
+        const el = document.getElementById(id);
+        const bar = document.getElementById(barId);
+        el.textContent = typeof val === 'number' ? val.toFixed(1) : val;
+        const cls = pct > 60 ? 'buy' : pct < 40 ? 'sell' : 'neutral';
+        el.className = `signal-val ${cls}`;
+        bar.style.width = pct + '%';
+        bar.className = `signal-bar-fill ${pct > 60 ? 'green' : pct < 40 ? 'red' : 'yellow'}`;
+        const box = document.getElementById(`sig-${id.split('-')[0]}`);
+        if (box) {
+            box.className = `signal-box ${pct > 65 ? 'active-buy' : pct < 35 ? 'active-sell' : ''}`;
+        }
+    };
+    if(typeof rsi==='number'){
+        document.getElementById('rsi-val').textContent = rsi.toFixed(1);
+        const rCls = rsi > 60 ? 'buy' : rsi < 40 ? 'sell' : 'neutral';
+        document.getElementById('rsi-val').className = `signal-val ${rCls}`;
+        document.getElementById('rsi-bar').style.width = rsi + '%';
+        document.getElementById('rsi-bar').className = `signal-bar-fill ${rsi > 60 ? 'green' : rsi < 40 ? 'red' : 'yellow'}`;
+
+        document.getElementById('macd-val').textContent = macd.toFixed(1);
+        const mCls = macd > 60 ? 'buy' : macd < 40 ? 'sell' : 'neutral';
+        document.getElementById('macd-val').className = `signal-val ${mCls}`;
+        document.getElementById('macd-bar').style.width = macd + '%';
+        document.getElementById('macd-bar').className = `signal-bar-fill ${macd > 60 ? 'green' : macd < 40 ? 'red' : 'yellow'}`;
+
+        document.getElementById('mom-val').textContent = mom.toFixed(1);
+        const momCls = mom > 60 ? 'buy' : mom < 40 ? 'sell' : 'neutral';
+        document.getElementById('mom-val').className = `signal-val ${momCls}`;
+        document.getElementById('mom-bar').style.width = mom + '%';
+        document.getElementById('mom-bar').className = `signal-bar-fill ${mom > 60 ? 'green' : mom < 40 ? 'red' : 'yellow'}`;
+
+        document.getElementById('vol-val').textContent = vol.toFixed(1);
+        const vCls = vol > 60 ? 'buy' : vol < 40 ? 'sell' : 'neutral';
+        document.getElementById('vol-val').className = `signal-val ${vCls}`;
+        document.getElementById('vol-bar').style.width = vol + '%';
+        document.getElementById('vol-bar').className = `signal-bar-fill ${vol > 60 ? 'green' : vol < 40 ? 'red' : 'yellow'}`;
+
+        document.getElementById('trend-val').textContent = trend.toFixed(1);
+        const tCls = trend > 60 ? 'buy' : trend < 40 ? 'sell' : 'neutral';
+        document.getElementById('trend-val').className = `signal-val ${tCls}`;
+        document.getElementById('trend-bar').style.width = trend + '%';
+        document.getElementById('trend-bar').className = `signal-bar-fill ${trend > 60 ? 'green' : trend < 40 ? 'red' : 'yellow'}`;
+    }
+
+    const fEl = document.getElementById('final-val');
+    fEl.textContent = finalSig;
+    fEl.className = `signal-val ${finalSig==='BUY'?'buy':finalSig==='SELL'?'sell':'neutral'}`;
+    const fPct = finalSig==='BUY'?80:finalSig==='SELL'?20:50;
+    document.getElementById('final-bar').style.width = fPct+'%';
+    document.getElementById('final-bar').className = `signal-bar-fill ${finalSig==='BUY'?'green':finalSig==='SELL'?'red':'yellow'}`;
+}
+
+function updateStats() {
+    document.getElementById('stat-trades').textContent = tradeCount;
+    const wr = tradeCount > 0 ? ((wins/tradeCount)*100).toFixed(1)+'%' : '—';
+    document.getElementById('stat-wr').textContent = wr;
+    document.getElementById('stat-profit').textContent = '+' + grossProfit.toFixed(3) + ' APT';
+    document.getElementById('stat-loss').textContent = '-' + grossLoss.toFixed(3) + ' APT';
+    const net = grossProfit - grossLoss;
+    const netEl = document.getElementById('stat-net');
+    netEl.textContent = (net >= 0 ? '+' : '') + net.toFixed(3) + ' APT';
+    netEl.className = `pnl-val ${net >= 0 ? 'pos' : 'neg'}`;
+    document.getElementById('stat-dd').textContent = maxDD.toFixed(2) + '%';
+}
+
+function addTradeRow(type, entry, exit, size, pnl, win) {
+    const tbody = document.getElementById('tradeHistory');
+    const now = new Date().toTimeString().split(' ')[0];
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td class="td-mono">${now}</td>
+        <td class="${win ? 'td-buy' : 'td-sell'}">${type}</td>
+        <td class="td-mono">${entry.toFixed(4)}</td>
+        <td class="td-mono">${size}</td>
+        <td class="${win ? 'td-profit' : 'td-loss'}">${win?'+':''}${pnl.toFixed(3)}</td>
+    `;
+    tbody.insertBefore(tr, tbody.firstChild);
+}
+</script>
+</body>
+</html>
